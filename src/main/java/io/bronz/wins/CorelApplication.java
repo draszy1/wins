@@ -1,11 +1,18 @@
 package io.bronz.wins;
 
+import io.bronz.wins.calculator.WinCalculator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@Slf4j
+@RequiredArgsConstructor
 @SpringBootApplication
 public class CorelApplication implements CommandLineRunner {
+
+    private final WinCalculator winCalculator;
 
     public static void main(String[] args) {
         SpringApplication.run(CorelApplication.class, args);
@@ -13,6 +20,8 @@ public class CorelApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("aaaaaa");
+        log.info("fffffffffffffffff");
+
+        winCalculator.analyzeResults();
     }
 }
