@@ -11,10 +11,10 @@ public class CorelationPresenter {
     public void presentSameWins(Map<String, List<HistoricalResult>> theSameWins) {
 
         if (theSameWins.isEmpty()) {
-            System.out.println("THERE WAS NEVER THE SAME SET OF NUMBERS DRAWN.");
+            System.out.println("\nTHERE WAS NEVER THE SAME SET OF NUMBERS DRAWN.");
         }
 
-        System.out.println("THE SAME WINS DURING HISTORY");
+        System.out.println("\nTHE SAME WINS DURING HISTORY");
         System.out.println("==============================");
 
         theSameWins.entrySet().forEach(win -> {
@@ -24,9 +24,18 @@ public class CorelationPresenter {
     }
 
     public void presentOccurenceOfNumbers(Map<String, Long> occurenceOfDrawnNumber, int numberOfGames) {
-        System.out.println("DRAWN NUMBERS WITH OCCURENCE");
+        System.out.println("\nDRAWN NUMBERS WITH OCCURENCE");
+        System.out.println("==============================");
 
         occurenceOfDrawnNumber.forEach((key, value) -> System.out.println("Number " + key + "\t->\t"
+                + value + " times (" + getPercentage(value, numberOfGames) + ")."));
+    }
+
+    public void presentBenfordDistribution(Map<Integer, Long> benfordNumbers, long numberOfGames) {
+        System.out.println("\nBENFORD'S DISTRIBUTION");
+        System.out.println("==============================");
+
+        benfordNumbers.forEach((key, value) -> System.out.println("Number beginning from " + key + "\t->\t"
                 + value + " times (" + getPercentage(value, numberOfGames) + ")."));
     }
 
@@ -38,7 +47,7 @@ public class CorelationPresenter {
         System.out.println("------------------------------");
     }
 
-    private String getPercentage(long numberOfTimes, int numberOfGames) {
+    private String getPercentage(long numberOfTimes, long numberOfGames) {
         double percentage = (100 * numberOfTimes) / (double) numberOfGames;
 
         return String.format("%.2f", percentage) + " %";

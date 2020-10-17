@@ -27,6 +27,7 @@ public class WinAnalyzer {
 
         sameWins(historicalResults);
         occurenceOfDrawnNumber(historicalResults);
+        benford(historicalResults);
     }
 
     private void sameWins(List<HistoricalResult> historicalResults) {
@@ -38,6 +39,46 @@ public class WinAnalyzer {
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         corelationPresenter.presentSameWins(theSameWins);
+    }
+
+    private void benford(List<HistoricalResult> historicalResults) {
+        List<String> allNumbers = historicalResults.stream()
+                .map(HistoricalResult::getResult)
+                .flatMap(numbers -> Arrays.stream(numbers.split(","))).collect(toList());
+
+        //allNumbers.forEach(nbr -> System.out.print(nbr+","));
+
+        long numbersBeginningWithOneCount = allNumbers.stream()
+                .filter(number -> number.startsWith("1"))
+                .count();
+
+        long numbersBeginningWithTwoCount = allNumbers.stream()
+                .filter(number -> number.startsWith("2"))
+                .count();
+
+        long numbersBeginningWithThreeCount = allNumbers.stream()
+                .filter(number -> number.startsWith("3"))
+                .count();
+
+        long numbersBeginningWithFourCount = allNumbers.stream()
+                .filter(number -> number.startsWith("4"))
+                .count();
+
+        Map<Integer, Long> benfordNumbers = Map.of(
+                1, numbersBeginningWithOneCount,
+                2, numbersBeginningWithTwoCount,
+                3, numbersBeginningWithThreeCount,
+                4, numbersBeginningWithFourCount
+        ).entrySet().stream()
+                .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        long totalNumbersCount = numbersBeginningWithOneCount
+                + numbersBeginningWithTwoCount
+                + numbersBeginningWithThreeCount
+                + numbersBeginningWithFourCount;
+
+        corelationPresenter.presentBenfordDistribution(benfordNumbers, totalNumbersCount);
     }
 
     private void occurenceOfDrawnNumber(List<HistoricalResult> historicalResults) {
