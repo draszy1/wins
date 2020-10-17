@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.*;
 
 @Slf4j
 @Service
@@ -26,6 +26,7 @@ public class WinAnalyzer {
         List<HistoricalResult> historicalResults = getHistoricalResults();
 
         sameWins(historicalResults);
+        occurenceOfDrawnNumber(historicalResults);
     }
 
     private void sameWins(List<HistoricalResult> historicalResults) {
@@ -39,6 +40,18 @@ public class WinAnalyzer {
         corelationPresenter.presentSameWins(theSameWins);
     }
 
+    private void occurenceOfDrawnNumber(List<HistoricalResult> historicalResults) {
+        Map<String, Long> occurenceOfDrawnNumber = historicalResults.stream()
+                .map(HistoricalResult::getResult)
+                .flatMap(numbers -> Arrays.stream(numbers.split(",")))
+                .collect(groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        corelationPresenter.presentOccurenceOfNumbers(occurenceOfDrawnNumber, historicalResults.size());
+    }
 
     private List<HistoricalResult> getHistoricalResults() {
         return resultFileReader.getHistoricalResults();

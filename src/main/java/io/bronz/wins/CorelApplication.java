@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Slf4j
 @RequiredArgsConstructor
 @SpringBootApplication
 public class CorelApplication implements CommandLineRunner {
@@ -20,7 +19,7 @@ public class CorelApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        log.info("fffffffffffffffff");
+        System.out.println("************************** LOTTO WIN ANALYZER **************************");
 
         winAnalyzer.analyzeResults();
     }

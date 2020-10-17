@@ -17,11 +17,17 @@ public class CorelationPresenter {
         System.out.println("THE SAME WINS DURING HISTORY");
         System.out.println("==============================");
 
-        for (var win : theSameWins.entrySet()) {
+        theSameWins.entrySet().forEach(win -> {
             System.out.println("Numbers: " + win.getKey());
-
             presentWinDates(win);
-        }
+        });
+    }
+
+    public void presentOccurenceOfNumbers(Map<String, Long> occurenceOfDrawnNumber, int numberOfGames) {
+        System.out.println("DRAWN NUMBERS WITH OCCURENCE");
+
+        occurenceOfDrawnNumber.forEach((key, value) -> System.out.println("Number " + key + "\t->\t"
+                + value + " times (" + getPercentage(value, numberOfGames) + ")."));
     }
 
     private void presentWinDates(Map.Entry<String, List<HistoricalResult>> win) {
@@ -29,6 +35,12 @@ public class CorelationPresenter {
             System.out.println(winDetails.getDate());
         }
 
-        System.out.println("---------------------");
+        System.out.println("------------------------------");
+    }
+
+    private String getPercentage(long numberOfTimes, int numberOfGames) {
+        double percentage = (100 * numberOfTimes) / (double) numberOfGames;
+
+        return String.format("%.2f", percentage) + " %";
     }
 }
